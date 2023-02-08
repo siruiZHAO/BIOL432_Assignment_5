@@ -1,0 +1,57 @@
+---
+title: "BIOL432 Assignment 5"
+author: "SiruiZHAO"
+date: "2023-02-08"
+output: html_document
+---
+
+Part I: Data Science
+
+[my GitHub repository](https://github.com/siruiZHAO/BIOL432_Assignment_5.git)
+
+```{r}
+#load library
+library(dplyr)
+```
+
+1. Import your measurements.csv file from the Week 1 Assignment into an object called MData
+```{r}
+#Import data
+MData <- read.csv("measurements.csv")
+
+head(MData)
+```
+```{r}
+#check data structure
+str(MData)
+```
+    
+2. Use a dplyr command AND regular expression(s) to add a new column called Sp that shortens the genus name in the Organism column to only the first letter and period. For example: Homo sapiens in the original Organism column becomes H. sapiens in the Sp column.
+    
+```{r}
+#use mutate() create new column and gsub() in regular expressions to shortens the letters after first capital letters
+MData <- MData %>%
+  mutate(Sp = gsub("([A-Z]).* (.*)", "\\1. \\2", organism))
+
+#check data
+head(MData)
+```
+    
+3. Use a dplyr command to create a new dataset BUT with Sp column instead of the Organism column, moved to the beginning in place of the original Organism column.
+```{r}
+#create new dataset only with Sp
+#move Sp column to the beginning
+NewData <- MData %>%
+  select(Sp, Limb_width, Limb_length, limb_volume, Observer)
+
+#check data
+head(NewData)
+```
+
+4. Save the dataset as a new file called MeasShort.csv
+```{r}
+#save as csv file
+write.csv(NewData, "MeasShort.csv")
+```
+
+Thanks!
